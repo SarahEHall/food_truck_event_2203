@@ -38,6 +38,7 @@ describe FoodTruck do
       expect(@food_truck.inventory).to eq({@item1 => 55, @item2 => 12})
     end
   end
+
   context 'Iteration 2' do
     before(:each) do
       @food_truck1 = FoodTruck.new("Rocky Mountain Pies")

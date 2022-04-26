@@ -1,11 +1,13 @@
 require './lib/food_truck'
+require 'date'
 class Event
 
-  attr_reader :name, :food_trucks
+  attr_reader :name, :food_trucks, :date
 
   def initialize(name)
     @name = name
     @food_trucks = []
+    @date = Date.today.strftime("%d/%m/%Y")
   end
 
   def add_food_truck(food_truck)
@@ -43,6 +45,24 @@ class Event
   def overstocked_items
     total_inv = total_inventory
     total_inv.keys.find_all { |item| total_inv[item][:quantity] > 50 && total_inv[item][:food_trucks].length > 1 }
+  end
+
+  def sell(item, amount)
+    total_inv = total_inventory
+    if total_inv[item][:quantity] < amount || total_inv[item].nil?
+      return false
+    else
+      total_inv[item][:quantity] -= amount
+      total_inv[item][:food_trucks].each do |truck|
+        if amount > truck.inventory[item]
+          amount = amount - truck.inventory[item]
+          truck.inventory[item] = 0
+        else
+          truck.inventory[item] -= amount
+          return true
+        end
+      end
+    end
   end
 
 end
