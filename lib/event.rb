@@ -49,7 +49,7 @@ class Event
 
   def sell(item, amount)
     total_inv = total_inventory
-    if total_inv[item][:quantity] < amount || total_inv[item].nil?
+    if total_inv[item].nil? || total_inv[item][:quantity] < amount
       return false
     else
       total_inv[item][:quantity] -= amount
